@@ -65,7 +65,7 @@ namespace SessionSample.Pages
         }
 
         public IActionResult OnPostChangeAge()
-        {
+        {E
             var r = new Random();
 
             HttpContext.Session.SetInt32(SessionKeyAge, r.Next(500, 1000));

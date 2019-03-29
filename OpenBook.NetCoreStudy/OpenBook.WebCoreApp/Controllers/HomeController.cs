@@ -29,5 +29,11 @@ namespace OpenBook.WebCoreApp.Controllers
             //var error = exceptionHandlerPathFeature?.Error;
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult TagForm()
+        {
+            return View();
+        }
+
     }
 }

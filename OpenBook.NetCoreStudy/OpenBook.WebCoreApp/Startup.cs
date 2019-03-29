@@ -83,7 +83,7 @@ namespace OpenBook.WebCoreApp
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            app.UseResponseCompression();
+            //app.UseResponseCompression();
 
             //app.Use(async (context, next) =>
             //{
