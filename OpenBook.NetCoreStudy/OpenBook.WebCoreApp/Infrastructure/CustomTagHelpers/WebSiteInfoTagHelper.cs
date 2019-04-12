@@ -13,8 +13,7 @@ namespace OpenBook.WebCoreApp.Infrastructure.CustomTagHelpers
         public WebsiteContext Info { get; set; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
-        {
-            
+        {            
             output.TagName = "section";
             output.Content.SetHtmlContent($@"<ul><li><strong>Version:</strong> {Info.Version}</li>
 <li><strong>Copyright Year:</strong> {Info.CopyrightYear}</li>

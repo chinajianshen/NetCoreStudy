@@ -6,20 +6,21 @@ using System.Threading.Tasks;
 
 namespace OpenBook.WebCoreApp.Infrastructure.CustomTagHelpers
 {
+    [HtmlTargetElement(Attributes = nameof(Condition))]
+    //[HtmlTargetElement(Attributes = "Condition")]
     public class ConditionTagHelper:TagHelper
     {
-        public bool Condition { get; set; }       
+      
+        public bool Condition { get; set; }
 
-        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             if (!Condition)
             {
                 output.SuppressOutput();
             }
 
-            
-         
-            //return base.ProcessAsync(context, output);
+            //base.Process(context, output);
         }
     }
 }

@@ -9,8 +9,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OpenBook.WebCoreApp.Infrastructure.CustomApplicationModel;
+using OpenBook.WebCoreApp.Infrastructure.CustomFilters;
+using OpenBook.WebCoreApp.Infrastructure.CustomTagHelpComponents;
 
 namespace OpenBook.WebCoreApp
 {
@@ -34,7 +38,17 @@ namespace OpenBook.WebCoreApp
             });
 
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(options => {
+                options.Conventions.Add(new ApplicationDescription("My Application Description"));
+                //options.Conventions.Add(new NamespaceRoutingConvention());
+                options.Filters.Add(new AddHeaderAttribute("services.AddMvc", "Header Added"));
+                options.Filters.Add(typeof(SampleActionFilter));
+                options.Filters.Add(typeof(SampleAsyncActionFilter));
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            //services.AddTransient<ITagHelperComponent, AddressStyleTagHelperComponent>();
+            //services.AddTransient<ITagHelperComponent, AddressScriptTagHelperComponent>();
+            services.AddTransient<ITagHelperComponent, AddressTagHelperComponent>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -102,7 +116,7 @@ namespace OpenBook.WebCoreApp
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=TagForm}/{id?}");
             });
         }
     }
