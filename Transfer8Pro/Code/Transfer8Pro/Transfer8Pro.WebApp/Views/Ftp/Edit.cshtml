@@ -1,0 +1,134 @@
+﻿@model Transfer8Pro.Entity.OB.FtpInfoEntity
+
+@{
+    ViewBag.Title = "编辑";
+    Layout = "~/Views/Shared/_LayoutPopub.cshtml";
+}
+
+
+<div class="row-fluid">
+    <!-- PAGE CONTENT BEGINS HERE -->
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-body">
+                    <div class="widget-main">
+
+                        <div class="row-fluid">
+                            <div class="row-fluid position-relative">
+
+                                <div class="step-pane">
+                                    <form class="form-horizontal" id="myform">
+                                        <input type="hidden" id="FtpID" name="FtpID" value="@Model.FtpID" />
+                                        <input type="hidden"  id="FtpEncryptKey" name="FtpEncryptKey" value="@Model.FtpEncryptKey"/>
+
+                                        <div class="control-group">
+                                            <label class="control-label" for="FtpUserName">Ftp账号:</label>
+                                            <div class="controls">
+                                                <div class="span12">
+                                                    <input type="text" name="FtpUserName" id="FtpUserName" class="span6 required" value="@Model.FtpUserName" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="control-group">
+                                            <label class="control-label" for="FtpPassword">Ftp账号密码:</label>
+                                            <div class="controls">
+                                                <div class="span12">
+                                                    <input type="text" name="FtpPassword" id="FtpPassword" class="span6 required" value="@Model.FtpPassword" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="control-group">
+                                            <label class="control-label" for="FtpFolderName">Ftp文件夹名称:</label>
+                                            <div class="controls">
+                                                <div class="span12">
+                                                    <input type="text" name="FtpFolderName" id="FtpFolderName" class="span6 required" value="@Model.FtpFolderName" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="control-group">
+                                            <label class="control-label" for="FtpEncryptKey">客户密钥:</label>
+                                            <div class="controls">
+                                                <div class="span12">
+                                                    <input type="text" name="txtFtpEncryptKey" id="txtFtpEncryptKey" disabled="disabled" class="span6 required" value="@Model.FtpEncryptKey" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <hr />
+
+                                        <div class="row-fluid wizard-actions">
+                                            <button class="btn btn-success" type="submit">保存 </button>
+                                            <button class="btn btn-success" type="button" onclick="javascript:cancel();">取消 </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>                        
+                        </div>
+                    </div>
+                    <!--/widget-main-->
+                </div>
+                <!--/widget-body-->
+            </div>
+        </div>
+    </div>
+    <!--PAGE PARAS-->
+    <!-- PAGE CONTENT ENDS HERE -->
+</div>
+@section scripts{
+    <script>
+        $(function () {
+           
+        });     
+
+        $("#myform").validate({
+            submitHandler: function () {
+                $.ajax({
+                    type: "post",
+                    url: "/ftp/edit",
+                    dataType: "json",
+                    data: $("#myform").serialize(),
+                    beforeSend: function () {
+                        layer.load();
+                    },
+                    success: function (json) {                       
+                        layer.closeAll('loading');                            
+                        var alertLayer = layer.alert(json.Msg, function () {
+                            if (json.Status == 1) {
+                                layer.close(alertLayer);
+                                parent.refreshData();
+                                closeLayer();
+                            }
+                            else {
+                                layer.close(alertLayer);
+                            }
+                        })
+                    },
+                    error: function () {
+                        layer.closeAll("loading");
+                        layer.alert("保存失败");
+                    }
+                });
+            },
+            messages: {
+                FtpUserName: { required: "必填项" },
+                FtpPassword: { required: "必填项" },
+                FtpFolderName: { required: "必填项" },
+                FtpEncryptKey: { required: "必填项" }
+
+            }
+        });
+
+        var cancel = function () {
+            closeLayer();
+        }
+
+        var closeLayer = function () {
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+        }
+    </script>
+}

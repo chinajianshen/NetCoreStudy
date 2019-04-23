@@ -16,6 +16,7 @@ namespace OpenBook.WebCoreApp.Infrastructure.CustomFilters
 
         public void OnResourceExecuting(ResourceExecutingContext context)
         {
+          
             if (context.HttpContext.Request.Path.ToString().Contains("NamespaceRouting") && context.HttpContext.Request.Query.ContainsKey("a1"))
             {
                 context.Result = new ContentResult()

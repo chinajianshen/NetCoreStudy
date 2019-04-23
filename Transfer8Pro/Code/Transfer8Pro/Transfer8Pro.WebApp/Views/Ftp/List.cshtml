@@ -1,0 +1,166 @@
+﻿
+@{
+    ViewBag.Title = "Ftp账号查询管理";
+}
+
+
+@section nav{
+    <li class="active">Ftp账号查询管理</li>
+}
+
+
+<div class="alert alert-block alert-success form-horizontal">
+    <div class="control-group" style="float: left;">
+        <label class="control-label" for="txtloginname">FTP账号</label>
+        <div class="controls">
+            <input type="text" class="data-param" id="txtFtpUserName" name="FtpUserName" />
+        </div>
+    </div>
+
+    <div class="control-group" style="float: left;">
+        <label class="control-label" for="txtFtpEncryptKey">客户密钥</label>
+        <div class="controls">
+            <input type="text" class="data-param" id="txtFtpEncryptKey" name="FtpEncryptKey" />
+        </div>
+    </div>
+    <div class="btn-group" style="float: right;">
+        <button class="btn  btn-primary" onclick="javascript:refreshData();">查询</button>
+        @*<button class="btn  btn-purple" onclick="javascript:openview();">新增</button>*@
+        @*<button class="btn  btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            <li><a href="javascript:" onclick="javascript:searchuser(false);" id="btnsearch">查询</a></li>
+            <li><a href="javascript:" id="btndownload">导出</a></li>
+        </ul>*@
+    </div>
+
+    <div style="width: 100%; height: 1px; font-size: 0; overflow: hidden; clear: both;"></div>
+</div>
+
+<table class="table table-striped table-bordered table-hover" id="table"></table>
+
+@section scripts{
+    <script>
+        var total = 0;
+        var TableInit;
+        var columns = [
+            { field: 'rowId', title: '序号' },
+            { field: 'FtpServerName', title: 'FTP服务器地址' },
+            { field: 'FtpUserName', title: 'FTP账号' },
+            { field: 'SupName', title: '书店' },
+            { field: 'FtpPassword', title: 'FTP账号密码' },
+            { field: "FtpFolderName", title: "FTP文件夹名" },
+            { field: "FtpEncryptKey", title: "客户密钥" }
+            //,{
+            //    field: "CreateTime", title: "创建时间",
+            //    formatter: function (value, item) {
+            //        return dateFormat(item.CreateTime);
+            //    }
+            //}
+            //,{
+            //    title: "操作",
+            //    formatter: function (value, item) {
+            //        var ophtml = '<div class="inline position-relative">';
+            //        ophtml += '<button class="btn btn - minier btn - primary dropdown - toggle" data-toggle="dropdown">操作</button>';
+            //        ophtml += ' <ul class="dropdown-menu dropdown-icon-only dropdown-light pull-right dropdown-caret dropdown-close">';
+            //        ophtml += ' <li><a title="" class="tooltip-success" href="javascript:" data-original-title="Edit" data-placement="left" data-rel="tooltip" onclick="javascript:openview(' + item.FtpID + ');"><span class="green">编辑</span></a></li>';
+            //        ophtml += ' <li><a title="" class="tooltip-error" href="javascript:" data-original-title="Delete" data-placement="left" data-rel="tooltip" onclick="javascript:deleteuser(' + item.FtpID +');"><span class="red">删除</span></a></li>';
+            //        ophtml += '</ul>';
+            //        ophtml += '</div>';
+            //        return ophtml;
+            //    },
+            //    unpost: true
+            //}
+        ];
+
+        var refreshData = function () {
+            TableInit.refresh();
+        }
+
+        $(function () {
+
+            //初始化Table
+            var oTable = new TableInit();
+            oTable.columns = columns;
+            oTable.calBack = function (json) {
+                if (json.total > 0) {
+                    total = json.total;
+                }
+                json.total = total;
+                return json;
+            }
+            oTable.fetchParams = function (obj) {
+                if (!obj) {
+                    obj = {};
+                }
+                $.each($('.data-param'),
+                    function (index, item) {
+                        obj[item.name] = item.value;
+                    });
+                return JSON.stringify(obj);
+            }
+            oTable.Init({
+                tableId: '#table',
+                url: '/ftp/list',
+                toolbar: '#toolPanel',
+                uniqueId: 'FtpUserName'
+
+            });
+            TableInit = oTable;
+        })
+
+        var openview = function (pid) {
+            //layer.alert(pid);
+            var title = pid ? "编辑Ftp账号" : "新增Ftp账号";
+            var url = "/ftp/edit";
+            if (pid) {
+                url += "?pid=" + pid;
+            }
+
+            layer.open({
+                type: 2,
+                area: ['1080px', '570px'],
+                title: title,
+                content: [url, 'no'],
+                area: ['800px', '400px']
+                //btn: ['保存', '取消'],
+                //btn1: function (layero, index) {
+                //    layer.closeAll();
+                //    layer.msg('操作成功', { icon: 1 });
+                //},
+                //success: function (layero, index) {
+                //    var body = layer.getChildFrame('body', index);
+                //    alert(body);
+                //    //var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：
+                //},
+                //end: function () {
+
+                //}
+            });
+        }
+
+        var deleteuser = function (pid) {
+            var confirmLayer = layer.confirm('您确定要删除当前Ftp账号吗？',
+                { btn: ['确定', '取消'] },
+                function () {
+                    layer.load();
+                    $.post('/ftp/delete', { pid: pid, ts: new Date().getTime() }, function (json) {
+                        layer.closeAll("loading");
+                        var alertLayer = layer.alert(json.Msg, function () {
+                            if (json.Status == 1) {
+                                layer.close(alertLayer);
+                                refreshData();
+                            }
+                            else {
+                                layer.close(alertLayer);
+                            }
+                        });
+                    }).error(function (xhr, errorText, errorType) {
+                        layer.closeAll("loading");
+                        layer.alert("删除失败");
+                        layer.close(confirmLayer);
+                    });
+                }
+            );
+        }
+    </script>
+}

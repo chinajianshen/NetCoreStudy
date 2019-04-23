@@ -1,0 +1,118 @@
+﻿
+@{
+    ViewBag.Title = "系统配置查询管理";
+}
+
+
+@section nav{
+<li class="active">系统配置查询管理</li>
+}
+
+
+<div class="alert alert-block alert-success form-horizontal">
+    <div class="control-group" style="float: left;">
+        <label class="control-label" for="txtloginname">FTP账号</label>
+        <div class="controls">
+            <input type="text" class="data-param" id="txtFtpUserName" name="FtpUserName" />
+        </div>
+    </div>
+
+    <div class="btn-group" style="float: right;">
+        <button class="btn  btn-primary" onclick="javascript:refreshData();">查询</button>
+        @*<button class="btn  btn-purple" onclick="javascript:openview();">新增</button>*@
+        @*<button class="btn  btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li><a href="javascript:" onclick="javascript:searchuser(false);" id="btnsearch">查询</a></li>
+                <li><a href="javascript:" id="btndownload">导出</a></li>
+            </ul>*@
+    </div>
+
+    <div style="width: 100%; height: 1px; font-size: 0; overflow: hidden; clear: both;"></div>
+</div>
+
+<table class="table table-striped table-bordered table-hover" id="table"></table>
+
+@section scripts{
+    <script>
+        var total = 0;
+        var TableInit;
+        var columns = [
+            { field: 'rowId', title: '序号' },
+            { field: 'FtpUserName', title: 'FTP账号' },
+            { field: 'SysConfigID', title: '系统配置ID' },
+            { field: 'SysConfigName', title: '系统配置名称' },
+            {
+                field: 'Status', title: '状态',
+                formatter: function (value, item) {
+                    if (item.SysConfigID == 50 || item.SysConfigID == 60) {
+                        return "正常";
+                    }
+                    else {
+                        if (item.Status == 1) {
+                            return "运行中";
+                        }
+                        else {
+                            return "停止";
+                        }
+                    }
+                }
+            },
+            { field: "Cron", title: "Cron表达式" },
+            {
+                title: "其它信息",
+                formatter: function (value, item) {
+                    if (item.SysConfigID == 50 && item.ExSetting01) {
+                        return "客户端版本号：" + item.ExSetting01;
+                    }
+
+                    if (item.SysConfigID == 60) {
+                        return "客户密钥：" + item.ExSetting01;
+                    }
+                }
+            }
+            ,{
+                field: "UploadTime", title: "上传时间",
+                formatter: function (value, item) {
+                    return dateFormat(item.UploadTime,2);
+                }
+            }          
+        ];
+
+        var refreshData = function () {
+            TableInit.refresh();
+        }
+
+        $(function () {
+
+            //初始化Table
+            var oTable = new TableInit();
+            oTable.columns = columns;
+            oTable.calBack = function (json) {
+                if (json.total > 0) {
+                    total = json.total;
+                }
+                json.total = total;
+                return json;
+            }
+            oTable.fetchParams = function (obj) {
+                if (!obj) {
+                    obj = {};
+                }
+                $.each($('.data-param'),
+                    function (index, item) {
+                        obj[item.name] = item.value;
+                    });
+                return JSON.stringify(obj);
+            }
+            oTable.Init({
+                tableId: '#table',
+                url: '/CustomerConfig/SystemConfigList',
+                toolbar: '#toolPanel',
+                uniqueId: 'rowId'
+
+            });
+            TableInit = oTable;
+        })      
+    </script>
+}
+

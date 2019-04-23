@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="overview & stats" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/content/layoutpopub_css/bootstrap")
+
+    <!--[if IE 7]>
+     @Styles.Render("~/content/common_css/font_awesome_ie7")
+    <![endif]-->
+
+    @Styles.Render("~/content/layoutpopub_css/ace")
+
+    <!--[if lt IE 9]>
+      @Styles.Render("~/content/common_css/ace_ie9")
+    <![endif]-->
+   
+    @Styles.Render("~/content/layoutpopub_css/common")
+
+    @RenderSection("styles",required:false)
+</head>
+<body>
+    <div>
+        @RenderBody()
+    </div>
+
+    <!-- basic scripts -->
+    @Scripts.Render("~/content/common_js/jquery")
+
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='~/Content/Scripts/jquery-1.9.1.min.js'>\x3C/script>");
+    </script>
+
+    @Scripts.Render("~/content/layoutpopub_js/bootstrap")
+
+    @Scripts.Render("~/content/common_js/jqueryval")
+
+    @Scripts.Render("~/content/layoutpopub_js/common")
+
+    @Scripts.Render("~/content/scripts/Plugins/layer/js")
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

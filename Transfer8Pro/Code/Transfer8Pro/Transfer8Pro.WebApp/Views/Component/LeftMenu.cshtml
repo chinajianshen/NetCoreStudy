@@ -1,0 +1,74 @@
+﻿@using Transfer8Pro.Entity.OB
+@model List<SystemFunctionEntity>
+
+@{ 
+    
+}
+
+<ul id="leftMenu" class="nav nav-list">
+    <li id="li_0" class="active">
+        <a href="/home/index?fun=0">
+            <i class="icon-dashboard"></i>
+            <span>首页</span>
+        </a>
+    </li>
+
+    @foreach (SystemFunctionEntity parentItem in Model)
+    {
+        if (parentItem.ChildFunList.Count > 0)
+        {
+            <li>
+                <a href="javascript:;" class="dropdown-toggle">
+                    <i class="icon-desktop"></i>
+                    <span>@parentItem.FunctionName</span>
+                    <b class="arrow icon-angle-down"></b>
+                </a>
+                <ul class="submenu">
+                    @foreach (SystemFunctionEntity childItem in parentItem.ChildFunList)
+                    {
+                        <li id="li_@childItem.FunctionID" pid="li_@childItem.FunctionID"><a href="@(Url.Content(childItem.FunctionURL) + "?fun="+ childItem.FunctionID)">
+                            <i class="icon-double-angle-right"></i> @childItem.FunctionName</a>
+                        </li>
+                    }
+                </ul>
+
+            </li>
+        }
+        else
+        {
+            <li id="li_10" class="active">
+                <a href="@Url.Content(parentItem.FunctionURL)">
+                    <i class="icon-dashboard"></i>
+                    <span>@parentItem.FunctionName</span>
+                </a>
+            </li>
+        }
+    }
+
+    @*<li>
+        <a href="#" class="dropdown-toggle">
+            <i class="icon-desktop"></i>
+            <span>心跳管理</span>
+            <b class="arrow icon-angle-down"></b>
+        </a>
+        <ul class="submenu">
+            <li id="li_20" pid="li_20"><a href="/heartbeat/list?fun=20"><i class="icon-double-angle-right"></i> 心跳查询管理</a></li>
+        </ul>
+
+    </li>
+
+    <li>
+        <a href="#" class="dropdown-toggle">
+
+            <i class="icon-desktop"></i>
+
+            <span>Ftp账号管理</span>
+
+            <b class="arrow icon-angle-down"></b>
+        </a>
+        <ul class="submenu">
+            <li id="li_30" pid="li_30"><a href="/ftp/list?fun=30"><i class="icon-double-angle-right"></i> Ftp账号查询管理</a></li>
+        </ul>
+    </li>*@
+
+</ul>

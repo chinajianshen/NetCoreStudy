@@ -1,0 +1,143 @@
+﻿@{
+    ViewBag.Title = "心跳查询管理";
+}
+
+
+@section nav{
+    <li class="active">心跳查询管理</li>
+}
+
+<div class="alert alert-block alert-success form-horizontal">
+    <div class="control-group" style="float: left;">
+        <label class="control-label" for="txtloginname">FTP账号</label>
+        <div class="controls">
+            <input type="text" class="data-param" id="txtFtpUserName" name="FtpUserName"/>
+        </div>
+    </div>
+    <div class="control-group" style="float: left;">
+        <label class="control-label" for="txtcompany">系统类型</label>
+        <div class="controls">          
+            <select class="span12 data-param" id="selSystemType" name="SystemType" >
+                <option value="">--请选择--</option>
+                <option value="1">日采集系统</option>
+                <option value="2">传8系统</option>
+            </select>
+        </div>
+    </div>
+    <div class="control-group" style="float: left;">
+        <label class="control-label" for="txtcompany">心跳状态</label>
+        <div class="controls">
+            <select class="span12 data-param" id="selHeartbeatStatus" name="HeartbeatStatus">
+                <option value="">--请选择--</option>
+                <option value="1">正常</option>
+                <option value="2">中断</option>
+            </select>
+        </div>
+    </div>
+    <div class="btn-group" style="float: right;">
+        <button class="btn  btn-primary" onclick="javascript:refreshData();">查询</button>
+        @*<button class="btn  btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            <li><a href="javascript:" onclick="javascript:searchuser(false);" id="btnsearch">查询</a></li>
+            <li><a href="javascript:" id="btndownload">导出</a></li>
+        </ul>*@
+    </div>
+  
+    <div style="width: 100%; height: 1px; font-size: 0; overflow: hidden; clear: both;"></div>
+</div>
+
+
+<table class="table table-striped table-bordered table-hover" id="table"></table>
+
+
+@section scripts{
+    <script>
+        var total = 0;
+        var TableInit;
+        var columns = [
+            { field: 'rowId', title: '序号' },           
+            { field: 'FtpUserName', title: 'FTP账号' },
+            { field: 'SupName', title: '书店' },
+            { field: "FtpFolderName", title: "FTP文件夹名" }
+            , {
+                field: "SystemType", title: "系统类型",
+                formatter: function (value, item) {
+                    if (item.SystemType == 1) {
+                        return "日采集系统";
+                    }
+                    else if (item.SystemType == 2) {
+                        return "传8系统";
+                    }
+                    else {
+                        return "";
+                    }
+                }
+            }
+            , {
+                field: 'RecentDataHeartbeatTime', title: '最近数据导出心跳时间',
+                formatter: function (value, item) {
+                    var css = "";
+                    if (item.RecentDataStatus == 2) {
+                        css = "style='color:red;'";
+                    }
+
+                    return "<span " + css + ">" + dateFormat(item.RecentDataHeartbeatTime, 1) + "</span>";
+                }
+            },
+            {
+                field: 'RecentDataHeartbeatTime', title: '最近FTP上传心跳时间',
+                formatter: function (value, item) {
+                    var css = "";
+                    if (item.RecentFtpStatus == 2) {
+                        css = "style='color:red;'";
+                    }
+
+                    return "<span " + css + ">" + dateFormat(item.RecentFtpHeartbeatTime, 1) + "</span>";
+                }
+            }
+            , {
+                field: "CreateTime", title: "创建时间",
+                formatter: function (value, item) {
+                    return dateFormat(item.CreateTime);
+                }
+            }
+        ];
+
+        var refreshData = function () {
+            TableInit.refresh();
+        }
+
+        $(function () {
+            $('select').select2({ minimumResultsForSearch: Infinity });
+
+            //初始化Table
+            var oTable = new TableInit();
+            oTable.columns = columns;
+            oTable.calBack = function (json) {
+                if (json.total > 0) {
+                    total = json.total;
+                }
+                json.total = total;
+                return json;
+            }
+            oTable.fetchParams = function (obj) {
+                if (!obj) {
+                    obj = {};
+                }
+                $.each($('.data-param'),
+                    function (index, item) {
+                        obj[item.name] = item.value;
+                    });
+                return JSON.stringify(obj);
+            }
+            oTable.Init({
+                tableId: '#table',
+                url: '/heartbeat/list',
+                toolbar: '#toolPanel',
+                uniqueId: 'FtpUserName'
+                               
+            });
+            TableInit = oTable;
+        })
+    </script>
+}

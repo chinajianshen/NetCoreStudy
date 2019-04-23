@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -9,10 +10,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OpenBook.WebCoreApp.Infrastructure.CustomApplicationModel;
+using OpenBook.WebCoreApp.Infrastructure.CustomFeatureProviders;
 using OpenBook.WebCoreApp.Infrastructure.CustomFilters;
 using OpenBook.WebCoreApp.Infrastructure.CustomTagHelpComponents;
 
@@ -37,14 +40,24 @@ namespace OpenBook.WebCoreApp
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            #region 应用程序部件 使用方法 
+            //var assembly = typeof(Startup).GetTypeInfo().Assembly;
+            //services.AddMvc().AddApplicationPart(assembly);
+
+            //var assembly = typeof(Startup).GetTypeInfo().Assembly;
+            //var part = new AssemblyPart(assembly);
+            //services.AddMvc().ConfigureApplicationPartManager(apm => apm.ApplicationParts.Add(part));
+            #endregion
 
             services.AddMvc(options => {
-                options.Conventions.Add(new ApplicationDescription("My Application Description"));
+                //options.Conventions.Add(new ApplicationDescription("My Application Description"));
                 //options.Conventions.Add(new NamespaceRoutingConvention());
-                options.Filters.Add(new AddHeaderAttribute("services.AddMvc", "Header Added"));
-                options.Filters.Add(typeof(SampleActionFilter));
-                options.Filters.Add(typeof(SampleAsyncActionFilter));
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                //options.Filters.Add(new AddHeaderAttribute("services.AddMvc", "Header Added"));
+                //options.Filters.Add(typeof(SampleActionFilter));
+                //options.Filters.Add(typeof(SampleAsyncActionFilter));
+            })
+            .ConfigureApplicationPartManager(apm => apm.FeatureProviders.Add(new GenericControllerFeatureProvider()))
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //services.AddTransient<ITagHelperComponent, AddressStyleTagHelperComponent>();
             //services.AddTransient<ITagHelperComponent, AddressScriptTagHelperComponent>();

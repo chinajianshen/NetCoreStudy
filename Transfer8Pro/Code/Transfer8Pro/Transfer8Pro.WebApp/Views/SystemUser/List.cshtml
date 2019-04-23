@@ -1,0 +1,169 @@
+﻿@using Transfer8Pro.Entity.OB;
+
+@{
+    ViewBag.Title = "系统用户查询管理";
+}
+
+
+@section nav{
+    <li class="active">系统用户查询管理</li>
+}
+
+
+    <div class="alert alert-block alert-success form-horizontal">
+        <div class="control-group" style="float: left;">
+            <label class="control-label" for="txtUserName">姓名</label>
+            <div class="controls">
+                <input type="text" class="data-param" id="txtUserName" name="UserName" />
+            </div>
+        </div>
+
+        <div class="control-group" style="float: left;">
+            <label class="control-label" for="txtUserLoginName">用户名</label>
+            <div class="controls">
+                <input type="text" class="data-param" id="txtUserLoginName" name="UserLoginName" />
+            </div>
+        </div>
+
+        <div class="btn-group" style="float: right;">
+            <button class="btn  btn-primary" onclick="javascript:refreshData();">查询</button>
+            <button class="btn  btn-purple" onclick="javascript:getNewUsers();">获取员工信息</button>
+        </div>
+
+        <div style="width: 100%; height: 1px; font-size: 0; overflow: hidden; clear: both;"></div>
+    </div>
+
+
+<table class="table table-striped table-bordered table-hover" id="table"></table>
+
+
+@section scripts{
+    <script>
+        var total = 0;
+        var TableInit;
+        var columns = [
+            { field: 'rowId', title: '序号' },
+            { field: 'UserLoginName', title: '用户名' },
+            { field: 'UserName', title: '姓名' },
+            { field: "DepartName", title: "所属部门" },         
+            { field: "RoleName", title: "用户角色" },     
+            {
+                field: "CreateTime", title: "创建时间",
+                formatter: function (value, item) {
+                    return dateFormat(item.CreateTime);
+                }
+            },
+            {
+                title: "操作",
+                formatter: function (value, item) {
+                    var ophtml = '<div class="inline position-relative">';
+                    ophtml += '<button class="btn btn - minier btn - primary dropdown - toggle" data-toggle="dropdown">操作</button>';
+                    ophtml += ' <ul class="dropdown-menu dropdown-icon-only dropdown-light pull-right dropdown-caret dropdown-close">';
+
+                    if (item.UserID != "USEROB000000") {
+                        ophtml += ' <li><a title="" class="tooltip-success" href="javascript:" data-original-title="Edit" data-placement="left" data-rel="tooltip" onclick="javascript:openview(\'' + item.UserID + '\',' + item.RoleID + ');"><span class="green">设置角色</span></a></li>';
+                    }
+                    else {
+                        ophtml += ' <li><a title="" class="tooltip-success" href="javascript:" data-original-title="Edit" data-placement="left" data-rel="tooltip" onclick="javascript:layer.alert(\'管理员账号禁止操作\');"><span class="green">设置角色</span></a></li>';
+                    }                   
+
+                    //var roleFun = "javascript:void();";
+                    //if (item.RoleID > 0) {
+                    //    roleFun = "javascript:deleteuser(" + item.UserID + ");";
+                    //}
+
+                    //ophtml += ' <li><a title="" class="tooltip-error" href="javascript:" data-original-title="Delete" data-placement="left" data-rel="tooltip" onclick=""><span class="red">取消用户角色</span></a></li>';
+                    ophtml += '</ul>';
+                    ophtml += '</div>';
+                    return ophtml;
+                },
+                unpost: true
+            }
+        ];
+
+        var refreshData = function () {
+            TableInit.refresh();
+        }
+
+        $(function () {
+            $('select').select2({ minimumResultsForSearch: Infinity });
+
+            //初始化Table
+            var oTable = new TableInit();
+            oTable.columns = columns;
+            oTable.calBack = function (json) {               
+                if (json.total > 0) {
+                    total = json.total;
+                }
+                json.total = total;
+                return json;
+            }
+            oTable.fetchParams = function (obj) {
+                if (!obj) {
+                    obj = {};
+                }
+                $.each($('.data-param'),
+                    function (index, item) {
+                        obj[item.name] = item.value;
+                    });
+                return JSON.stringify(obj);
+            }
+            oTable.Init({
+                tableId: '#table',
+                url: '/systemuser/list',
+                toolbar: '#toolPanel',
+                uniqueId: 'UserID'
+
+            });
+            TableInit = oTable;
+        })
+
+
+        var openview = function (pid,rid) {
+            if (pid == null || pid == undefined) {
+                var alertLayer = layer.alert("参数丢失", function () {
+                    layer.close(alertLayer);                   
+                });
+                return;
+            }
+            
+            var url = "/systemuser/setrole?pid=" + pid;
+            if (rid && parseInt(rid) > 0) {
+                url += "&rid=" + rid;
+            }
+            layer.open({
+                type: 2,
+                area: ["800px","400px"],
+                title: '设置用户角色',
+                content: [url, 'no']
+               
+            });
+        };
+
+        var getNewUsers = function () {
+            var confirmLayer = layer.confirm('您确定要获取所有开卷员工数据吗？',
+                { btn: ['确定', '取消'] },
+                function () {
+                    layer.load();
+                    $.post('/SystemUser/GetNewUsers', { ts: new Date().getTime() }, function (json) {
+                        layer.closeAll("loading");
+                        var alertLayer = layer.alert(json.Msg, function () {
+                            if (json.Status == 1) {
+                                layer.close(alertLayer);
+                                refreshData();
+                            }
+                            else {
+                                layer.close(alertLayer);
+                            }
+                        });
+                    }).error(function (xhr, errorText, errorType) {
+                        layer.closeAll("loading");
+                        layer.alert("获取失败");
+                        layer.close(confirmLayer);
+                    });
+                }
+            );
+        }
+
+    </script>
+}

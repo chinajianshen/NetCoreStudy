@@ -1,0 +1,172 @@
+﻿@model Transfer8Pro.Entity.TaskViewEntity
+
+@{ 
+    ViewBag.Title = "任务明细";
+    Layout = "~/Views/Shared/_LayoutPopub.cshtml";
+}
+
+<div class="row-fluid">
+    <!-- PAGE CONTENT BEGINS HERE -->
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-body">
+                    <div class="widget-main">
+
+                        <div class="row-fluid">
+                            <div class="row-fluid position-relative">
+
+                                <div class="step-pane">
+                                    <form class="form-horizontal" id="myform">
+                                        <div class="control-group">
+                                            <label class="control-label" for="FtpUserName">任务ID:</label>
+                                            <div class="controls">
+                                                <div class="span12">
+                                                    <input type="text" class="span6" value="@Model.TaskID" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="control-group">
+                                            <label class="control-label" for="FtpUserName">任务名称:</label>
+                                            <div class="controls">
+                                                <div class="span12">
+                                                    <input type="text" class="span6" value="@Model.TaskName" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="control-group">
+                                            <label class="control-label" for="FtpUserName">数据类型:</label>
+                                            <div class="controls">
+                                                <div class="span12">
+                                                    <input type="text" class="span6" value="@Model.DataTypeName" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="control-group">
+                                            <label class="control-label" for="FtpUserName">数据库类型:</label>
+                                            <div class="controls">
+                                                <div class="span12">
+                                                    <input type="text" class="span6" value="@Model.DataBaseTypeName" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="control-group">
+                                            <label class="control-label" for="FtpUserName">POS类型:</label>
+                                            <div class="controls">
+                                                <div class="span12">
+                                                    <input type="text" class="span6" value="@Model.PosTypeName" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="control-group">
+                                            <label class="control-label" for="FtpUserName">数据库连接字符串:</label>
+                                            <div class="controls">
+                                                <div class="span12">
+                                                    @*<input type="text" class="span6" value="@Model.DBConnectString_Hashed" />*@
+                                                    <textarea class="span6" rows="4" cols="250" style="overflow:auto">@Model.DBConnectString_Hashed</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="control-group">
+                                            <label class="control-label">SQL语句:</label>
+                                            <div class="controls">
+                                                <div class="span12">
+                                                    <textarea class="span6" rows="4" cols="250" style="overflow:auto">@Model.SQL</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="control-group">
+                                            <label class="control-label">执行周期表达式:</label>
+                                            <div class="controls">
+                                                <div class="span12">
+                                                    <input type="text" class="span6" value="@Model.Cron" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="control-group">
+                                            <label class="control-label">执行周期表达式描述:</label>
+                                            <div class="controls">
+                                                <div class="span12">
+                                                    <textarea class="span6" rows="4" cols="250" style="overflow:auto">@Model.CronDesc</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="control-group">
+                                            <label class="control-label">状态:</label>
+                                            <div class="controls">
+                                                <div class="span12">
+                                                    <input type="text" class="span6" value="@Model.TaskStatusName" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="control-group">
+                                            <label class="control-label">最近一次执行时间:</label>
+                                            <div class="controls">
+                                                <div class="span12">
+                                                    <input type="text" class="span6" value="@(Model.RecentRunTime != DateTime.MinValue ? Model.RecentRunTime.ToString("yyyy-MM-dd HH:mm:ss") : "")" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="control-group">
+                                            <label class="control-label">下次执行时间:</label>
+                                            <div class="controls">
+                                                <div class="span12">
+                                                    <input type="text" class="span6" value="@(Model.NextFireTime != DateTime.MinValue ? Model.NextFireTime.ToString("yyyy-MM-dd HH:mm:ss") : "")" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="control-group">
+                                            <label class="control-label">启用状态:</label>
+                                            <div class="controls">
+                                                <div class="span12">
+                                                    <input type="text" class="span6" value="@(Model.Enabled == 1 ? "启用":"禁用")" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <hr />
+
+                                        <div class="row-fluid wizard-actions">
+                                            <button class="btn btn-success" type="button" onclick="javascript:cancel();">关闭 </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/widget-main-->
+                </div>
+                <!--/widget-body-->
+            </div>
+        </div>
+    </div>
+    <!--PAGE PARAS-->
+    <!-- PAGE CONTENT ENDS HERE -->
+</div>
+
+@section scripts{
+   <script>
+       var cancel = function () {
+           closeLayer();
+       }
+
+       var closeLayer = function () {
+           var index = parent.layer.getFrameIndex(window.name);
+           parent.layer.close(index);
+       }
+    </script>    
+}

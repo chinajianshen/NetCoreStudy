@@ -1,0 +1,167 @@
+﻿
+@model Transfer8Pro.Entity.TaskViewEntity
+
+@{
+    ViewBag.Title = "设置权限菜单";
+    Layout = "~/Views/Shared/_LayoutPopub.cshtml";
+}
+
+@section styles{
+    @Styles.Render("~/content/scripts/Plugins/jstree/dist/themes/default/css")
+    @*<link rel="stylesheet" href="~/Content/Scripts/Plugins/jstree/dist/themes/default/style.css" />*@
+}
+
+<div class="row-fluid">
+    <!-- PAGE CONTENT BEGINS HERE -->
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-body">
+                    <div class="widget-main">
+
+                        <div class="row-fluid">
+                            <div class="row-fluid position-relative">
+
+                                <div class="step-pane">
+                                    <form class="form-horizontal" id="myform">
+                                        <input type="hidden" id="hidPid" value="@ViewBag.RoleID" />
+
+                                        <div class="control-group">
+                                            <div id="functionTree" class="span12"> </div>
+                                        </div>
+
+                                        <div class="row-fluid wizard-actions">
+                                            <button class="btn btn-success" type="button" onclick="javascript:save()">保存 </button>
+                                            <button class="btn btn-success" type="button" onclick="javascript:cancel();">关闭 </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/widget-main-->
+                </div>
+                <!--/widget-body-->
+            </div>
+        </div>
+    </div>
+    <!--PAGE PARAS-->
+    <!-- PAGE CONTENT ENDS HERE -->
+</div>
+
+
+@section scripts{
+    @Scripts.Render("~/content/scripts/Plugins/jstree/dist/js")
+    @*<script src="~/Content/Scripts/Plugins/jstree/dist/jstree.js"></script>*@
+
+    <script>
+        $(function () {
+            $.ajax({
+                type: "POST",
+                url: "/systemuser/MenuList",
+                data: { roleID: '@ViewBag.roleID', ts: new Date().getTime() },
+                dataType: "json",
+                beforeSend: function () {
+                    layer.load();
+                },
+                success: function (json) {
+                    layer.closeAll("loading");
+                    if (json.Status != 1) {
+                        var alertLayer = layer.alert(json.Msg, function () {
+                            layer.close(alertLayer);
+                            closeLayer();
+                        });
+                        return;
+                    }
+
+                    $('#functionTree').jstree({
+                        'plugins': ["wholerow", "checkbox", "types"],
+                        'core': {
+                            "themes": {
+                                "responsive": false
+                            },
+                            'data': json.Data
+                        }
+                    });
+                },
+                error: function () {
+                    layer.closeAll("loading");
+                    var alertLayer = layer.alert("设置菜单权限异常", function () {
+                        layer.close(alertLayer);
+                        closeLayer();
+                    });
+                }
+            });
+        })
+
+        var save = function () {
+            var ref = $('#functionTree').jstree(true);//获得整个树
+            ref.get_all_checked = function (full) {
+                var tmp = new Array;
+                for (var i in this._model.data) {
+                    if (this.is_undetermined(i) || this.is_checked(i)) { tmp.push(full ? this._model.data[i] : i); }
+                }
+                return tmp;
+            };
+            var checkedNodes = ref.get_all_checked(true);//获取所有选中节点值，返回是数组（父节点，子节点）
+            var checkedId = ref.get_all_checked();//获取所有选中节点id（父节点，子节点）
+            var nodes = [];
+            checkedNodes.forEach(function (e) { //去掉根节点
+                if (!!e.parent && e.parent != "#") {
+                    nodes.push({ "id": e.original.id, "name": e.original.name });
+                }
+            });
+
+            if (nodes.length == 0) {
+                layer.alert("请至少选择一条数据");
+                return;
+            }
+
+            //var nodes = $("#functionTree").jstree().get_checked(); //获取所有选中节点（如果所有子点没选中，不会选中父节点）
+            var pid = $("#hidPid").val();
+            var data = [];
+            $.each(nodes, function (index, item) {
+                data.push({ "RoleID": pid, "FunctionID": item.id });
+            })
+
+             $.ajax({
+                type: "POST",
+                 url: "/systemuser/SaveRoleMenu",
+                 data: { "menus": data, ts: new Date().getTime() },
+                dataType: "json",
+                beforeSend: function () {
+                    layer.load();
+                },
+                success: function (json) {
+                    layer.closeAll("loading");
+                    var alertLayer = layer.alert(json.Msg, function () {
+                        if (json.Status == 1) {
+                            layer.close(alertLayer);
+                            parent.refreshData();
+                            closeLayer();
+                        }
+                        else {
+                            layer.close(alertLayer);
+                        }
+                    })
+                },
+                error: function () {
+                    layer.closeAll("loading");
+                    var alertLayer = layer.alert("保存菜单权限异常", function () {
+                        layer.close(alertLayer);
+                        closeLayer();
+                    });
+                }
+            });
+        }
+
+       var cancel = function () {
+           closeLayer();
+       }
+
+       var closeLayer = function () {
+           var index = parent.layer.getFrameIndex(window.name);
+           parent.layer.close(index);
+       }
+    </script>
+}

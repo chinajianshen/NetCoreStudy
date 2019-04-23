@@ -1,0 +1,144 @@
+﻿
+@{
+    ViewBag.Title = "手动任务查询管理";
+}
+
+@section nav{
+<li class="active">手动任务查询管理</li>
+}
+
+
+<div class="alert alert-block alert-success form-horizontal">
+    <div class="control-group" style="float: left;">
+        <label class="control-label" for="txtloginname">FTP账号</label>
+        <div class="controls">
+            <input type="text" class="data-param" id="txtFtpUserName" name="FtpUserName" />
+        </div>
+    </div>
+
+    <div class="btn-group" style="float: right;">
+        <button class="btn  btn-primary" onclick="javascript:refreshData();">查询</button>
+        @*<button class="btn  btn-purple" onclick="javascript:openview();">新增</button>*@
+        @*<button class="btn  btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li><a href="javascript:" onclick="javascript:searchuser(false);" id="btnsearch">查询</a></li>
+                <li><a href="javascript:" id="btndownload">导出</a></li>
+            </ul>*@
+    </div>
+
+    <div style="width: 100%; height: 1px; font-size: 0; overflow: hidden; clear: both;"></div>
+</div>
+
+<table class="table table-striped table-bordered table-hover" id="table"></table>
+
+@section scripts{
+    <script>
+        var total = 0;
+        var TableInit;
+        var columns = [
+            { field: 'rowId', title: '序号' },
+            { field: 'FtpUserName', title: 'FTP账号' },
+            { field: 'TaskID', title: '任务ID' },
+            { field: 'TaskName', title: '任务名称' },
+            { field: 'DataTypeName', title: '数据类型' },
+            { field: 'CycleTypeName', title: '时间类型' },
+            { field: 'PosTypeName', title: 'POS类型' }, 
+            { field: 'ManualTaskStatusName', title: '任务状态' }, 
+            {
+                field: "CompletionTime", title: "完成时间",
+                formatter: function (value, item) {
+                    return dateFormat(item.CompletionTime, 1);
+                }
+            },
+            {
+                field: "CreateTime", title: "创建时间",
+                formatter: function (value, item) {
+                    return dateFormat(item.CreateTime,1);
+                }
+            },
+            {
+                title: "操作",
+                formatter: function (value, item) {
+                    var ophtml = '<div class="inline position-relative">';
+                    ophtml += '<button class="btn btn - minier btn - primary dropdown - toggle" data-toggle="dropdown">操作</button>';
+                    ophtml += ' <ul class="dropdown-menu dropdown-icon-only dropdown-light pull-right dropdown-caret dropdown-close">';
+                    //已创建且创建时间小于3小时的，不能删除
+                    if (item.ManualTaskStatus == 0 && item.IntervalMinute<= 180) {
+                        ophtml += ' <li><a title="" class="tooltip-error" href="javascript:" data-original-title="Delete" data-placement="left" data-rel="tooltip" onclick="javascript:layer.alert(\'当前状态不支持删除操作\');"><span class="gray">删除</span></a></li>';
+                    }
+                    else {
+                        ophtml += ' <li><a title="" class="tooltip-error" href="javascript:" data-original-title="Delete" data-placement="left" data-rel="tooltip" onclick="javascript:delTask(' + item.ManualTaskID + ');"><span class="green">删除</span></a></li>';
+                    }
+                    
+                    ophtml += '</ul>';
+                    ophtml += '</div>';
+                    return ophtml;
+                },
+                unpost: true
+            }
+        ];
+
+        var refreshData = function () {
+            TableInit.refresh();
+        }
+
+        $(function () {
+
+            //初始化Table
+            var oTable = new TableInit();
+            oTable.columns = columns;
+            oTable.calBack = function (json) {
+                if (json.total > 0) {
+                    total = json.total;
+                }
+                json.total = total;
+                return json;
+            }
+            oTable.fetchParams = function (obj) {
+                if (!obj) {
+                    obj = {};
+                }
+                $.each($('.data-param'),
+                    function (index, item) {
+                        obj[item.name] = item.value;
+                    });
+                return JSON.stringify(obj);
+            }
+            oTable.Init({
+                tableId: '#table',
+                url: '/CustomerConfig/ManualTaskList',
+                toolbar: '#toolPanel',
+                uniqueId: 'rowId'
+
+            });
+            TableInit = oTable;
+        })
+
+        var delTask = function (pid) {
+            var confirmLayer = layer.confirm('您确定要删除当前任务吗？',
+                { btn: ['确定', '取消'] },
+                function () {
+                    layer.load();
+                    $.post('/CustomerConfig/DelManualTask', { pid: pid, ts: new Date().getTime() }, function (json) {
+                        layer.closeAll("loading");
+                        var alertLayer = layer.alert(json.Msg, function () {
+                            if (json.Status == 1) {
+                                layer.close(alertLayer);
+                                refreshData();
+                            }
+                            else {
+                                layer.close(alertLayer);
+                            }
+                        });
+                    }).error(function (xhr, errorText, errorType) {
+                        layer.closeAll("loading");
+                        layer.alert("删除失败");
+                        layer.close(confirmLayer);
+                    });
+                }
+            );
+        }     
+    </script>
+}
+
+

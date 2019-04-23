@@ -1,0 +1,206 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>传8后台管理系统</title>
+    <meta name="description" content="overview & stats" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- basic styles -->
+    @Styles.Render("~/content/layout_css/bootstrap")
+
+    <!--[if IE 7]>
+      <link rel="stylesheet" href="~/Content/Styles/font-awesome-ie7.min.css" />
+    <![endif]-->
+    <!-- page specific plugin styles -->
+    <!-- ace styles -->
+    @Styles.Render("~/content/layout_css/ace")
+
+    <!--[if lt IE 9]>
+      <link rel="stylesheet" href="~/Content/Styles/ace-ie.min.css" />
+    <![endif]-->
+
+    @Styles.Render("~/content/layout_css/common")
+
+    @RenderSection("styles", required: false)
+</head>
+<body>
+    <div class="navbar navbar-inverse">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <a class="brand" href="javascript:;"><small><i class="icon-leaf"></i> 传8采集后台管理系统</small> </a>
+                <!--/.ace-nav-->
+                @Html.Action("TopMessageNav", "Component")
+            </div><!--/.container-fluid-->
+        </div><!--/.navbar-inner-->
+    </div><!--/.navbar-->
+
+
+    <div class="container-fluid" id="main-container">
+        <a href="#" id="menu-toggler"><span></span></a><!-- menu toggler -->
+
+
+
+        <div id="sidebar">
+            <div id="sidebar-shortcuts">
+
+                <div id="sidebar-shortcuts-large">
+
+                    <button class="btn btn-small btn-success"><i class="icon-signal"></i></button>
+
+                    <button class="btn btn-small btn-info"><i class="icon-pencil"></i></button>
+
+                    <button class="btn btn-small btn-warning"><i class="icon-group"></i></button>
+
+                    <button class="btn btn-small btn-danger"><i class="icon-cogs"></i></button>
+
+                </div>
+
+                <div id="sidebar-shortcuts-mini">
+
+                    <span class="btn btn-success"></span>
+
+                    <span class="btn btn-info"></span>
+
+                    <span class="btn btn-warning"></span>
+
+                    <span class="btn btn-danger"></span>
+
+                </div>
+
+            </div><!-- #sidebar-shortcuts -->
+            <!--/.nav-list-->
+
+            @Html.Action("LeftMenu", "Component")
+
+
+            <div id="sidebar-collapse"><i class="icon-double-angle-left"></i></div>
+        </div><!--/#sidebar-->
+
+        <div id="main-content" class="clearfix">
+            <div id="breadcrumbs">
+
+                <ul class="breadcrumb">
+
+                    <li><i class="icon-home"></i> <a href="/home/index">首页</a><span class="divider"><i class="icon-angle-right"></i></span></li>
+
+                    @*<li class="active">Dashboard</li>*@
+                    @RenderSection("nav", required: false)
+                </ul><!--.breadcrumb-->
+                <!--#nav-search-->
+
+            </div><!--#breadcrumbs-->
+
+
+
+            <div id="page-content" class="clearfix">
+
+                <div class="page-header position-relative">
+                    @*<h1>Dashboard <small><i class="icon-double-angle-right"></i> overview & stats</small></h1>*@
+                    @RenderSection("pageheader", required: false)
+                </div><!--/page-header-->
+
+                <div class="row-fluid">
+                    <!-- PAGE CONTENT BEGINS HERE -->
+                    @RenderBody()
+                    <!-- PAGE CONTENT ENDS HERE -->
+                </div><!--/row-->
+
+            </div><!--/#page-content-->
+
+            <div id="ace-settings-container">
+                <div class="btn btn-app btn-mini btn-warning" id="ace-settings-btn">
+                    <i class="icon-cog"></i>
+                </div>
+                <div id="ace-settings-box">
+                    <div>
+                        <div class="pull-left">
+                            <select id="skin-colorpicker" class="hidden">
+                                <option data-class="default" value="#438EB9">#438EB9</option>
+                                <option data-class="skin-1" value="#222A2D">#222A2D</option>
+                                <option data-class="skin-2" value="#C6487E">#C6487E</option>
+                                <option data-class="skin-3" value="#D0D0D0">#D0D0D0</option>
+                            </select>
+                        </div>
+                        <span>&nbsp; 选择皮肤</span>
+                    </div>
+                    <div><input type="checkbox" class="ace-checkbox-2" id="ace-settings-header" /><label class="lbl" for="ace-settings-header"> Fixed Header</label></div>
+                    <div><input type="checkbox" class="ace-checkbox-2" id="ace-settings-sidebar" /><label class="lbl" for="ace-settings-sidebar"> Fixed Sidebar</label></div>
+                </div>
+            </div><!--/#ace-settings-container-->
+        </div><!-- #main-content -->
+    </div><!--/.fluid-container#main-container-->
+    <a href="#" id="btn-scroll-up" class="btn btn-small btn-inverse">
+        <i class="icon-double-angle-up icon-only"></i>
+    </a>
+    <!-- basic scripts -->
+    @Scripts.Render("~/content/common_js/jquery")
+
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='~/Content/Scripts/jquery-1.9.1.min.js'>\x3C/script>");
+    </script>
+
+    @*<script src="~/Content/Scripts/bootstrap.min.js"></script>*@
+    @Scripts.Render("~/content/layout_js/bootstrap")
+
+    <!-- page specific plugin scripts -->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="~/Content/Scripts/excanvas.min.js"></script>
+    <![endif]-->
+    <!-- ace scripts -->
+    @Scripts.Render("~/content/layout_js/common")
+
+    @Scripts.Render("~/content/scripts/Plugins/layer/js")
+    <!-- inline scripts related to this page -->   
+
+    <script type="text/javascript">
+        $(function () {
+            var para = getquerystring("fun");
+            var pid = "";
+            if (para) {
+                $("#leftMenu li").removeClass("active open");
+                if ($("#li_" + para).attr("pid") != undefined) {
+                    pid = $("#li_" + para).attr("pid");
+                    $("#li_" + para).addClass("active");
+                    $("#li_" + para).parents("li").addClass("active open");
+                    $("#li_" + para).closest("ul").show();
+                }
+                else {
+                    $("#li_" + para).addClass("active");
+                }
+            }
+            else {
+                $("#leftMenu> li:first").addClass("active");
+            }
+        })
+
+        var LogoutSystem = function () {
+            $.ajax({
+                type: "POST",
+                url: "/auth/Logout",
+                dataType: "json",
+                data: {},
+                beforeSend: function () {
+                    layer.load();
+                },
+                success: function (json) {
+                    layer.closeAll("loading");
+                    if (json.Status == 1) {
+                        window.location.href = "/";
+                    }
+                    else {
+                        layer.alert(json.Msg);
+                        return;
+                    }
+                },
+                error: function () {
+                    layer.closeAll("loading");
+                    layer.alert("系统异常");
+                    return;
+                }
+            });
+        }
+    </script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,179 @@
+﻿
+@{
+    ViewBag.Title = "任务配置查询管理";
+}
+
+
+@section nav{
+    <li class="active">任务配置查询管理</li>
+}
+
+
+<div class="alert alert-block alert-success form-horizontal">
+    <div class="control-group" style="float: left;">
+        <label class="control-label" for="txtloginname">FTP账号</label>
+        <div class="controls">
+            <input type="text" class="data-param" id="txtFtpUserName" name="FtpUserName" />
+        </div>
+    </div>
+
+    <div class="btn-group" style="float: right;">
+        <button class="btn  btn-primary" onclick="javascript:refreshData();">查询</button>
+        @*<button class="btn  btn-purple" onclick="javascript:openview();">新增</button>*@
+        @*<button class="btn  btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li><a href="javascript:" onclick="javascript:searchuser(false);" id="btnsearch">查询</a></li>
+                <li><a href="javascript:" id="btndownload">导出</a></li>
+            </ul>*@
+    </div>
+
+    <div style="width: 100%; height: 1px; font-size: 0; overflow: hidden; clear: both;"></div>
+</div>
+
+<table class="table table-striped table-bordered table-hover" id="table"></table>
+
+@section scripts{
+    <script>
+        var total = 0;
+        var TableInit;
+        var columns = [
+            { field: 'rowId', title: '序号' },
+            { field: 'FtpUserName', title: 'FTP账号' },
+            //{ field: 'TaskID', title: '任务ID' },
+            { field: 'TaskName', title: '任务名称' },
+            { field: 'DataTypeName', title: '数据类型' },
+            { field: 'CycleTypeName', title: '时间类型' },
+            { field: 'PosTypeName', title: 'POS类型' },
+            //{ field: "Cron", title: "执行周期表达式" },
+            { field: 'TaskStatusName', title: '状态' },
+            {
+                field: "RecentRunTime", title: "最近一次执行时间",
+                formatter: function (value, item) {
+                    return dateFormat(item.RecentRunTime);
+                }
+            },
+            {
+                field: "NextFireTime", title: "下次执行时间",
+                formatter: function (value, item) {
+                    return dateFormat(item.NextFireTime);
+                }
+            },
+            {
+                field: "Enabled", title: "启用状态",
+                formatter: function (value, item) {
+                    if (item.Enabled == 1) {
+                        return "启用";
+                    }
+                    else {
+                        return "已停用";
+                    }
+                }
+            },
+            {
+                field: "UploadTime", title: "上传时间",
+                formatter: function (value, item) {
+                    return dateFormat(item.UploadTime,2);
+                }
+            },
+            {
+                title: "操作",
+                formatter: function (value, item) {
+                    var ophtml = '<div class="inline position-relative">';
+                    ophtml += '<button class="btn btn - minier btn - primary dropdown - toggle" data-toggle="dropdown">操作</button>';
+                    ophtml += ' <ul class="dropdown-menu dropdown-icon-only dropdown-light pull-right dropdown-caret dropdown-close">';
+                    ophtml += ' <li><a title="" class="tooltip-success" href="javascript:" data-original-title="Edit" data-placement="left" data-rel="tooltip" onclick="javascript:openview(\'' + item.TaskID + '\',\'' + item.FtpUserName + '\');"><span class="green">任务明细</span></a></li>';
+                    ophtml += ' <li><a title="" class="tooltip-success" href="javascript:" data-original-title="Edit" data-placement="left" data-rel="tooltip" onclick="javascript:setManualTask(\'' + item.TaskID + '\',\'' + item.FtpUserName + '\');"><span class="red">重新执行一次任务</span></a></li>';
+                    ophtml += '</ul>';
+                    ophtml += '</div>';
+                    return ophtml;
+                },
+                unpost: true
+            }
+        ];
+
+        var refreshData = function () {
+            TableInit.refresh();
+        }
+
+        $(function () {
+
+            //初始化Table
+            var oTable = new TableInit();
+            oTable.columns = columns;
+            oTable.calBack = function (json) {
+                if (json.total > 0) {
+                    total = json.total;
+                }
+                json.total = total;
+                return json;
+            }
+            oTable.fetchParams = function (obj) {
+                if (!obj) {
+                    obj = {};
+                }
+                $.each($('.data-param'),
+                    function (index, item) {
+                        obj[item.name] = item.value;
+                    });
+                return JSON.stringify(obj);
+            }
+            oTable.Init({
+                tableId: '#table',
+                url: '/CustomerConfig/TaskList',
+                toolbar: '#toolPanel',
+                uniqueId: 'rowId'
+
+            });
+            TableInit = oTable;
+        })
+
+        var openview = function (taskID, ftpUserName) {
+            if (!taskID || !ftpUserName) {
+                var alertLayer = layer.alert("参数丢失", function () {
+                    layer.close(alertLayer);
+                });
+                return;
+            }
+
+            var url = "/CustomerConfig/TaskShow?taskID=" + taskID + "&ftpUserName=" + ftpUserName;          
+            layer.open({
+                type: 2,
+                area: ["1000px", "600px"],
+                title: '任务明细',
+                content: [url, 'yes']
+
+            });
+        };
+
+        var setManualTask = function (taskID, ftpUserName) {
+            if (!taskID || !ftpUserName) {
+                layer.alert("参数丢失");
+                return;
+            }
+
+            var confirmLayer = layer.confirm('您确定要重新执行一次该任务吗？(注：客户端采集系统必须开启[配置同步服务]，且客户端程序能正常访问开卷接口)',
+                { btn: ['确定', '取消'] },
+                function () {
+                    layer.load();
+                    $.post('/CustomerConfig/InsertManualTask', { "ftpUserName": ftpUserName, "taskID": taskID, ts: new Date().getTime() }, function (json) {
+                        layer.closeAll("loading");
+                        var alertLayer = layer.alert(json.Msg, function () {
+                            if (json.Status == 1) {
+                                layer.close(alertLayer);
+                                refreshData();
+                            }
+                            else {
+                                layer.close(alertLayer);
+                            }
+                        });
+                    }).error(function (xhr, errorText, errorType) {
+                        layer.closeAll("loading");
+                        layer.alert("保存失败");
+                        layer.close(confirmLayer);
+                    });
+                }
+            );
+        };
+    </script>
+}
+

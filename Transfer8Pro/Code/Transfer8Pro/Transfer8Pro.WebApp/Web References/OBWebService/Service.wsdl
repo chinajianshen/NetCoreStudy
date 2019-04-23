@@ -1,0 +1,701 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.openbook.com.cn/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://www.openbook.com.cn/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.openbook.com.cn/">
+      <s:element name="HelloWorld">
+        <s:complexType />
+      </s:element>
+      <s:element name="HelloWorldResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="HelloWorldResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="OBSoapHeader" type="tns:OBSoapHeader" />
+      <s:complexType name="OBSoapHeader">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Pass" type="s:string" />
+        </s:sequence>
+        <s:anyAttribute />
+      </s:complexType>
+      <s:element name="GetSerialNo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="type" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSerialNoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSerialNoResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TryLogin">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="loginname" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pwd" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sys" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TryLoginResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="TryLoginResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="userid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ChangePwd">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="oldpass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="newpass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ChangePwdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ChangePwdResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllEmpInfoForPageForOBFACE">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="deptid" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="groupid" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="usersex" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="PageSize" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="PageIndex" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllEmpInfoForPageForOBFACEResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAllEmpInfoForPageForOBFACEResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="1" maxOccurs="1" name="Records" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllDeptInfo">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetAllDeptInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAllDeptInfoResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetEmpDetailedInfoByUserID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetEmpDetailedInfoByUserIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetEmpDetailedInfoByUserIDResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUserInfoByDeptID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="deptid" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUserInfoByDeptIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUserInfoByDeptIDResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetEmpInfoForPageByParentID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="parentid" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="PageSize" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="PageIndex" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetEmpInfoForPageByParentIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetEmpInfoForPageByParentIDResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="1" maxOccurs="1" name="Records" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllEmpInfo">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetAllEmpInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAllEmpInfoResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllUserBySysID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="sysid" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllUserBySysIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAllUserBySysIDResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateUserStateBySysID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userid" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="sysid" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateUserStateBySysIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="UpdateUserStateBySysIDResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetGroupListByDeptID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="did" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetGroupListByDeptIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetGroupListByDeptIDResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="HelloWorldSoapIn">
+    <wsdl:part name="parameters" element="tns:HelloWorld" />
+  </wsdl:message>
+  <wsdl:message name="HelloWorldSoapOut">
+    <wsdl:part name="parameters" element="tns:HelloWorldResponse" />
+  </wsdl:message>
+  <wsdl:message name="HelloWorldOBSoapHeader">
+    <wsdl:part name="OBSoapHeader" element="tns:OBSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetSerialNoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSerialNo" />
+  </wsdl:message>
+  <wsdl:message name="GetSerialNoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSerialNoResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSerialNoOBSoapHeader">
+    <wsdl:part name="OBSoapHeader" element="tns:OBSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="TryLoginSoapIn">
+    <wsdl:part name="parameters" element="tns:TryLogin" />
+  </wsdl:message>
+  <wsdl:message name="TryLoginSoapOut">
+    <wsdl:part name="parameters" element="tns:TryLoginResponse" />
+  </wsdl:message>
+  <wsdl:message name="TryLoginOBSoapHeader">
+    <wsdl:part name="OBSoapHeader" element="tns:OBSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="ChangePwdSoapIn">
+    <wsdl:part name="parameters" element="tns:ChangePwd" />
+  </wsdl:message>
+  <wsdl:message name="ChangePwdSoapOut">
+    <wsdl:part name="parameters" element="tns:ChangePwdResponse" />
+  </wsdl:message>
+  <wsdl:message name="ChangePwdOBSoapHeader">
+    <wsdl:part name="OBSoapHeader" element="tns:OBSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetAllEmpInfoForPageForOBFACESoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllEmpInfoForPageForOBFACE" />
+  </wsdl:message>
+  <wsdl:message name="GetAllEmpInfoForPageForOBFACESoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllEmpInfoForPageForOBFACEResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllEmpInfoForPageForOBFACEOBSoapHeader">
+    <wsdl:part name="OBSoapHeader" element="tns:OBSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetAllDeptInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllDeptInfo" />
+  </wsdl:message>
+  <wsdl:message name="GetAllDeptInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllDeptInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllDeptInfoOBSoapHeader">
+    <wsdl:part name="OBSoapHeader" element="tns:OBSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetEmpDetailedInfoByUserIDSoapIn">
+    <wsdl:part name="parameters" element="tns:GetEmpDetailedInfoByUserID" />
+  </wsdl:message>
+  <wsdl:message name="GetEmpDetailedInfoByUserIDSoapOut">
+    <wsdl:part name="parameters" element="tns:GetEmpDetailedInfoByUserIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetEmpDetailedInfoByUserIDOBSoapHeader">
+    <wsdl:part name="OBSoapHeader" element="tns:OBSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetUserInfoByDeptIDSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUserInfoByDeptID" />
+  </wsdl:message>
+  <wsdl:message name="GetUserInfoByDeptIDSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUserInfoByDeptIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUserInfoByDeptIDOBSoapHeader">
+    <wsdl:part name="OBSoapHeader" element="tns:OBSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetEmpInfoForPageByParentIDSoapIn">
+    <wsdl:part name="parameters" element="tns:GetEmpInfoForPageByParentID" />
+  </wsdl:message>
+  <wsdl:message name="GetEmpInfoForPageByParentIDSoapOut">
+    <wsdl:part name="parameters" element="tns:GetEmpInfoForPageByParentIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetEmpInfoForPageByParentIDOBSoapHeader">
+    <wsdl:part name="OBSoapHeader" element="tns:OBSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetAllEmpInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllEmpInfo" />
+  </wsdl:message>
+  <wsdl:message name="GetAllEmpInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllEmpInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllEmpInfoOBSoapHeader">
+    <wsdl:part name="OBSoapHeader" element="tns:OBSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetAllUserBySysIDSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllUserBySysID" />
+  </wsdl:message>
+  <wsdl:message name="GetAllUserBySysIDSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllUserBySysIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllUserBySysIDOBSoapHeader">
+    <wsdl:part name="OBSoapHeader" element="tns:OBSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="UpdateUserStateBySysIDSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateUserStateBySysID" />
+  </wsdl:message>
+  <wsdl:message name="UpdateUserStateBySysIDSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateUserStateBySysIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateUserStateBySysIDOBSoapHeader">
+    <wsdl:part name="OBSoapHeader" element="tns:OBSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetGroupListByDeptIDSoapIn">
+    <wsdl:part name="parameters" element="tns:GetGroupListByDeptID" />
+  </wsdl:message>
+  <wsdl:message name="GetGroupListByDeptIDSoapOut">
+    <wsdl:part name="parameters" element="tns:GetGroupListByDeptIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetGroupListByDeptIDOBSoapHeader">
+    <wsdl:part name="OBSoapHeader" element="tns:OBSoapHeader" />
+  </wsdl:message>
+  <wsdl:portType name="ServiceSoap">
+    <wsdl:operation name="HelloWorld">
+      <wsdl:input message="tns:HelloWorldSoapIn" />
+      <wsdl:output message="tns:HelloWorldSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSerialNo">
+      <wsdl:input message="tns:GetSerialNoSoapIn" />
+      <wsdl:output message="tns:GetSerialNoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TryLogin">
+      <wsdl:input message="tns:TryLoginSoapIn" />
+      <wsdl:output message="tns:TryLoginSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangePwd">
+      <wsdl:input message="tns:ChangePwdSoapIn" />
+      <wsdl:output message="tns:ChangePwdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllEmpInfoForPageForOBFACE">
+      <wsdl:input message="tns:GetAllEmpInfoForPageForOBFACESoapIn" />
+      <wsdl:output message="tns:GetAllEmpInfoForPageForOBFACESoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllDeptInfo">
+      <wsdl:input message="tns:GetAllDeptInfoSoapIn" />
+      <wsdl:output message="tns:GetAllDeptInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetEmpDetailedInfoByUserID">
+      <wsdl:input message="tns:GetEmpDetailedInfoByUserIDSoapIn" />
+      <wsdl:output message="tns:GetEmpDetailedInfoByUserIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserInfoByDeptID">
+      <wsdl:input message="tns:GetUserInfoByDeptIDSoapIn" />
+      <wsdl:output message="tns:GetUserInfoByDeptIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetEmpInfoForPageByParentID">
+      <wsdl:input message="tns:GetEmpInfoForPageByParentIDSoapIn" />
+      <wsdl:output message="tns:GetEmpInfoForPageByParentIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllEmpInfo">
+      <wsdl:input message="tns:GetAllEmpInfoSoapIn" />
+      <wsdl:output message="tns:GetAllEmpInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllUserBySysID">
+      <wsdl:input message="tns:GetAllUserBySysIDSoapIn" />
+      <wsdl:output message="tns:GetAllUserBySysIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateUserStateBySysID">
+      <wsdl:input message="tns:UpdateUserStateBySysIDSoapIn" />
+      <wsdl:output message="tns:UpdateUserStateBySysIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetGroupListByDeptID">
+      <wsdl:input message="tns:GetGroupListByDeptIDSoapIn" />
+      <wsdl:output message="tns:GetGroupListByDeptIDSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ServiceSoap" type="tns:ServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="HelloWorld">
+      <soap:operation soapAction="http://www.openbook.com.cn/HelloWorld" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:HelloWorldOBSoapHeader" part="OBSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSerialNo">
+      <soap:operation soapAction="http://www.openbook.com.cn/GetSerialNo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetSerialNoOBSoapHeader" part="OBSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TryLogin">
+      <soap:operation soapAction="http://www.openbook.com.cn/TryLogin" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:TryLoginOBSoapHeader" part="OBSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangePwd">
+      <soap:operation soapAction="http://www.openbook.com.cn/ChangePwd" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ChangePwdOBSoapHeader" part="OBSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllEmpInfoForPageForOBFACE">
+      <soap:operation soapAction="http://www.openbook.com.cn/GetAllEmpInfoForPageForOBFACE" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetAllEmpInfoForPageForOBFACEOBSoapHeader" part="OBSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllDeptInfo">
+      <soap:operation soapAction="http://www.openbook.com.cn/GetAllDeptInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetAllDeptInfoOBSoapHeader" part="OBSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEmpDetailedInfoByUserID">
+      <soap:operation soapAction="http://www.openbook.com.cn/GetEmpDetailedInfoByUserID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetEmpDetailedInfoByUserIDOBSoapHeader" part="OBSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserInfoByDeptID">
+      <soap:operation soapAction="http://www.openbook.com.cn/GetUserInfoByDeptID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetUserInfoByDeptIDOBSoapHeader" part="OBSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEmpInfoForPageByParentID">
+      <soap:operation soapAction="http://www.openbook.com.cn/GetEmpInfoForPageByParentID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetEmpInfoForPageByParentIDOBSoapHeader" part="OBSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllEmpInfo">
+      <soap:operation soapAction="http://www.openbook.com.cn/GetAllEmpInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetAllEmpInfoOBSoapHeader" part="OBSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllUserBySysID">
+      <soap:operation soapAction="http://www.openbook.com.cn/GetAllUserBySysID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetAllUserBySysIDOBSoapHeader" part="OBSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateUserStateBySysID">
+      <soap:operation soapAction="http://www.openbook.com.cn/UpdateUserStateBySysID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:UpdateUserStateBySysIDOBSoapHeader" part="OBSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGroupListByDeptID">
+      <soap:operation soapAction="http://www.openbook.com.cn/GetGroupListByDeptID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetGroupListByDeptIDOBSoapHeader" part="OBSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ServiceSoap12" type="tns:ServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="HelloWorld">
+      <soap12:operation soapAction="http://www.openbook.com.cn/HelloWorld" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:HelloWorldOBSoapHeader" part="OBSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSerialNo">
+      <soap12:operation soapAction="http://www.openbook.com.cn/GetSerialNo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetSerialNoOBSoapHeader" part="OBSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TryLogin">
+      <soap12:operation soapAction="http://www.openbook.com.cn/TryLogin" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:TryLoginOBSoapHeader" part="OBSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangePwd">
+      <soap12:operation soapAction="http://www.openbook.com.cn/ChangePwd" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ChangePwdOBSoapHeader" part="OBSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllEmpInfoForPageForOBFACE">
+      <soap12:operation soapAction="http://www.openbook.com.cn/GetAllEmpInfoForPageForOBFACE" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetAllEmpInfoForPageForOBFACEOBSoapHeader" part="OBSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllDeptInfo">
+      <soap12:operation soapAction="http://www.openbook.com.cn/GetAllDeptInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetAllDeptInfoOBSoapHeader" part="OBSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEmpDetailedInfoByUserID">
+      <soap12:operation soapAction="http://www.openbook.com.cn/GetEmpDetailedInfoByUserID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetEmpDetailedInfoByUserIDOBSoapHeader" part="OBSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserInfoByDeptID">
+      <soap12:operation soapAction="http://www.openbook.com.cn/GetUserInfoByDeptID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetUserInfoByDeptIDOBSoapHeader" part="OBSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEmpInfoForPageByParentID">
+      <soap12:operation soapAction="http://www.openbook.com.cn/GetEmpInfoForPageByParentID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetEmpInfoForPageByParentIDOBSoapHeader" part="OBSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllEmpInfo">
+      <soap12:operation soapAction="http://www.openbook.com.cn/GetAllEmpInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetAllEmpInfoOBSoapHeader" part="OBSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllUserBySysID">
+      <soap12:operation soapAction="http://www.openbook.com.cn/GetAllUserBySysID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetAllUserBySysIDOBSoapHeader" part="OBSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateUserStateBySysID">
+      <soap12:operation soapAction="http://www.openbook.com.cn/UpdateUserStateBySysID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:UpdateUserStateBySysIDOBSoapHeader" part="OBSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGroupListByDeptID">
+      <soap12:operation soapAction="http://www.openbook.com.cn/GetGroupListByDeptID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetGroupListByDeptIDOBSoapHeader" part="OBSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Service">
+    <wsdl:port name="ServiceSoap" binding="tns:ServiceSoap">
+      <soap:address location="http://192.168.9.28:8888/Service.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ServiceSoap12" binding="tns:ServiceSoap12">
+      <soap12:address location="http://192.168.9.28:8888/Service.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
