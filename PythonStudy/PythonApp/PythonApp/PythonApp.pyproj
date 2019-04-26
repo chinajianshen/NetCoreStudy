@@ -21,19 +21,58 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ClassTest.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="CycleStatement.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Exercises1.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FileTest.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PyModule\AppDoctest.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PyModule\CustomError.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PyModule\MyClass.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PyModule\OSModule.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PyModule\using_sys.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Operator.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="PyModule\WebModule.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PyModule\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="PythonApp.py" />
+    <Compile Include="support.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Test1.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestModule.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="VariableType.py">
       <SubType>Code</SubType>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PyModule\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
