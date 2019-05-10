@@ -1,0 +1,8 @@
+#LWP-Cookies-2.0
+Set-Cookie3: _octo="GH1.1.1848066931.1557478535"; path="/"; domain=".github.com"; path_spec; domain_dot; expires="2021-05-10 08:55:35Z"; version=0
+Set-Cookie3: dotcom_user=chinajianshen; path="/"; domain=".github.com"; path_spec; domain_dot; secure; expires="2039-05-10 08:55:36Z"; HttpOnly=None; version=0
+Set-Cookie3: logged_in=yes; path="/"; domain=".github.com"; path_spec; domain_dot; secure; expires="2039-05-10 08:55:35Z"; HttpOnly=None; version=0
+Set-Cookie3: __Host-user_session_same_site="lJLA3z9BpxZf-P3E9b8qg253poOdt6YGFqusuk0hsvkVTUwy"; path="/"; domain="github.com"; path_spec; secure; expires="2019-05-24 08:55:36Z"; HttpOnly=None; SameSite=Strict; version=0
+Set-Cookie3: _device_id=705cff2d5a43e007ef7c1f3bae1e92a6; path="/"; domain="github.com"; path_spec; secure; expires="2039-05-10 08:55:35Z"; HttpOnly=None; version=0
+Set-Cookie3: has_recent_activity=1; path="/"; domain="github.com"; path_spec; expires="2019-05-10 09:55:36Z"; version=0
+Set-Cookie3: user_session="lJLA3z9BpxZf-P3E9b8qg253poOdt6YGFqusuk0hsvkVTUwy"; path="/"; domain="github.com"; path_spec; secure; expires="2019-05-24 08:55:36Z"; HttpOnly=None; version=0

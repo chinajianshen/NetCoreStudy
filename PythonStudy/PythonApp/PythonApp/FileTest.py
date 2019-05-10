@@ -6,6 +6,12 @@ f.write("Python 是一个非常好的语言。\n是的，的确非常好!!\n")
 f.close() #必须关闭 否则文件内容没有写入成功
 '''
 
+ #with open("my_meiju.txt",'a') as fp:
+ #    fp.write(item['name'].encode("utf8") + '\n')
+
+
+      
+
 filepath= os.path.join(os.path.abspath('.'),'tmp','foo.txt')
 print(filepath)
 
@@ -71,3 +77,5 @@ data2=pickle.load(f)
 pprint.pprint(data2)
 f.close()
 '''
+
+

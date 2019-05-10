@@ -4,13 +4,14 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>fa122b38-fa64-4d3f-b578-4a839753413e</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>PythonApp.py</StartupFile>
+    <StartupFile>PyModule\WebModule.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>PythonApp</Name>
     <RootNamespace>PythonApp</RootNamespace>
+    <InterpreterId>MSBuild|PythonApp_venv|$(MSBuildProjectFullPath)</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,16 +34,58 @@
     <Compile Include="FileTest.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MininovaSpider.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MySql\MysqlTest.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MySql\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="PyModule\AppDoctest.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="PyModule\ClassMethod.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="PyModule\CustomError.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PyModule\DateTimeModule.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PyModule\EmailModule.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PyModule\JsonConvet.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PyModule\MultiThread\MultiThread.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PyModule\MultiThread\MultiThread2.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PyModule\MultiThread\MultiThread3.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PyModule\MultiThread\MultiThread4.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PyModule\MyClass.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PyModule\OSModule.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PyModule\ReStudy.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PyModule\SocketClient.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PyModule\SocketServer.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PyModule\using_sys.py">
@@ -54,10 +97,37 @@
     <Compile Include="PyModule\WebModule.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="PyModule\WebModule2.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PyModule\WebRequestsModule.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PyModule\WebRequestsModule2.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PyModule\WebRequestsModule3.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="PyModule\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PythonApp.py" />
+    <Compile Include="ScrapySpider\HupuSpiderPipeline.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ScrapySpider\settings.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ScrapySpider\test.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ScrapySpider\TestSpider.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ScrapySpider\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="support.py">
       <SubType>Code</SubType>
     </Compile>
@@ -72,7 +142,24 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="MySql\" />
+    <Folder Include="ScrapySpider\" />
     <Folder Include="PyModule\" />
+    <Folder Include="PyModule\MultiThread\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Interpreter Include="D:\Program Files\PythonVenv_project\PythonApp_venv\">
+      <Id>PythonApp_venv</Id>
+      <Version>3.6</Version>
+      <Description>PythonApp_venv (Python 3.6 (64-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X64</Architecture>
+    </Interpreter>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="requirements.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
