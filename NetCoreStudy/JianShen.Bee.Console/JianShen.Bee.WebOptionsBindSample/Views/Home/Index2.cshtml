@@ -1,0 +1,22 @@
+﻿@using Microsoft.Extensions.Options
+@inject IOptions<JianShen.Bee.WebOptionsBindSample.Entities.Class> ClassAccesser
+
+
+@{
+    ViewData["Title"] = "Index2";
+}
+
+<h1>Index2</h1>
+
+<h4>Class No:@ClassAccesser.Value.ClassNo</h4>
+<h4>Class Desc:@ClassAccesser.Value.ClassDesc</h4>
+
+<h3>Students:</h3>
+<div>
+    @foreach (var student in ClassAccesser.Value.Students)
+    {
+        <span>Name:@student.Name</span>
+        <span>Age:@student.Age</span>
+    }
+</div>
+

@@ -11,7 +11,7 @@
     <OutputPath>.</OutputPath>
     <Name>ScrapyApp</Name>
     <RootNamespace>ScrapyApp</RootNamespace>
-    <InterpreterId>Global|VisualStudio|PythonApp_venv (Python 3.7 (64-bit))</InterpreterId>
+    <InterpreterId>MSBuild|PythonApp_venv|$(MSBuildProjectFullPath)</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -25,7 +25,15 @@
     <Compile Include="ScrapyApp.py" />
   </ItemGroup>
   <ItemGroup>
-    <InterpreterReference Include="Global|VisualStudio|PythonApp_venv (Python 3.7 (64-bit))" />
+    <Interpreter Include="D:\Program Files\PythonVenv_project\PythonApp_venv\">
+      <Id>PythonApp_venv</Id>
+      <Version>3.6</Version>
+      <Description>PythonApp_venv (Python 3.6 (64-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X64</Architecture>
+    </Interpreter>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

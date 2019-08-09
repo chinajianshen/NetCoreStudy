@@ -4,14 +4,14 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>fa122b38-fa64-4d3f-b578-4a839753413e</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>PyModule\WebModule.py</StartupFile>
+    <StartupFile>PyModule\BeautifulSoupLib.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>PythonApp</Name>
     <RootNamespace>PythonApp</RootNamespace>
-    <InterpreterId>Global|VisualStudio|PythonApp_venv (Python 3.7 (64-bit))</InterpreterId>
+    <InterpreterId>MSBuild|PythonApp_venv|$(MSBuildProjectFullPath)</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,6 +44,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PyModule\AppDoctest.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PyModule\BeautifulSoupLib.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PyModule\ClassMethod.py">
@@ -128,6 +131,15 @@
     <Compile Include="ScrapySpider\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="SpiderTest\QiuShiBaiKe.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SpiderTest\WeiXin.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SpiderTest\YouDaoSpider.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="support.py">
       <SubType>Code</SubType>
     </Compile>
@@ -143,6 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="MySql\" />
+    <Folder Include="SpiderTest\" />
     <Folder Include="ScrapySpider\" />
     <Folder Include="PyModule\" />
     <Folder Include="PyModule\MultiThread\" />
@@ -151,7 +164,15 @@
     <Content Include="requirements.txt" />
   </ItemGroup>
   <ItemGroup>
-    <InterpreterReference Include="Global|VisualStudio|PythonApp_venv (Python 3.7 (64-bit))" />
+    <Interpreter Include="D:\Program Files\PythonVenv_project\PythonApp_venv\">
+      <Id>PythonApp_venv</Id>
+      <Version>3.6</Version>
+      <Description>PythonApp_venv (Python 3.6 (64-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X64</Architecture>
+    </Interpreter>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
