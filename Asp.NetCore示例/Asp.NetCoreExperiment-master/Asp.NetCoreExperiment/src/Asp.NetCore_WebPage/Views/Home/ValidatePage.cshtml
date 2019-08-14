@@ -1,0 +1,187 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3" />
+    <meta http-equiv="description" content="This is my page" />
+    <title>ValidatePage</title>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <style>
+        input.error {
+            border: 1px solid red;
+        }
+
+        .tip {
+            padding: 5px 10px;
+            margin-left: 15px;
+            border: 1px solid #F8D19F;
+            border-radius: 3px;
+            background-color: #FDFBB8;
+            color: #D07807;
+            font-size: 12px;
+            position: absolute;
+            display: block;
+            z-index: 999999;
+            /*top: 3px;*/
+            left: 0px;
+        }
+
+            .tip:before, .tip:after {
+                content: attr(data-content);
+                font-family: xms;
+                position: absolute;
+            }
+
+            .tip:before {
+                color: #F8D19F;
+                left: 0px;
+                top: -12px;
+            }
+
+            .tip:after {
+                color: #FDFBB8;
+                left: 0px;
+                top: -10px;
+            }
+    </style>
+    <script src="~/lib/jquery/dist/jquery.js" type="text/javascript"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js" type="text/javascript"></script>
+
+    @*<script src="~/lib/jquery.metadata/jquery.metadata.js"></script>*@
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js" type="text/javascript"></script>
+
+    <script type="text/javascript">     
+        $(function () {
+            $("#myform").validate();
+            $("#modelform").validate();
+        });
+
+        $.extend($.validator.messages, {
+            required: "必选字段",
+            remote: "请修正该字段",
+            email: "请输入正确格式的电子邮件",
+            url: "请输入合法的网址",
+            date: "请输入合法的日期",
+            dateISO: "请输入合法的日期 (ISO).",
+            number: "请输入合法的数字",
+            digits: "只能输入整数",
+            creditcard: "请输入合法的信用卡号",
+            equalTo: "请再次输入相同的值",
+            accept: "请输入拥有合法后缀名的字符串",
+            maxlength: $.validator.format("请输入一个长度最多是 {0} 的字符串"),
+            minlength: $.validator.format("请输入一个长度最少是 {0} 的字符串"),
+            rangelength: $.validator.format("请输入一个长度介于 {0} 和 {1} 之间的字符串"),
+            range: $.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
+            max: $.validator.format("请输入一个最大为 {0} 的值"),
+            min: $.validator.format("请输入一个最小为 {0} 的值")
+        });
+
+        $.validator.addMethod("mobile", function (value, element) {
+            var score = /^1[34578]\d{9}$/;
+            return this.optional(element) || (score.test(value));
+        }, "手机格式不正确");
+
+        function sava() {
+
+            if ($("#myform").valid()) {
+                $.post("/valid", { mobile: $("#mobile").val(), name: $("#name").val() }, function (result) {
+                    alert(result);
+                })
+            }
+        }
+        function sava1() {
+
+            if ($("#modeform").valid()) {
+                $.post("/valid", { mobile: $("#mobile").val(), name: $("#name").val() }, function (result) {
+                    alert(result);
+                })
+            }
+        }
+    </script>
+</head>
+<body>
+    <form id="myform" method="post" action="">
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <input class="form-control required" id="mobile" name="mobile" placeholder="手机" />
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control required" id="name" name="name" placeholder="姓名" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <input type="button" name="sub1" onclick="sava()" class="btn" value="确定" />
+                    <input type="button" name="sub2" onclick="sava()" class="btn" value="确定" />
+                    <input type="button" name="sub3" onclick="sava()" class="btn" value="确定" />
+                </div>
+            </div>
+            @*<div class="row">
+                    <div class="col-md-12">
+                        <div class="tip" data-content="&#x25b2;">dddddddddd</div>
+                    </div>
+                </div>*@
+            <div class="row">
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Large modal</button>
+
+                </div>
+
+            </div>
+        </div>
+
+    </form>
+    <form id="modeform">
+        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input class="form-control required mobile" id="mobile1" name="mobile1" placeholder="手机" />
+                            </div>
+                            <div class="col-md-6">
+                                <input class="form-control required" id="name1" name="name1" placeholder="姓名" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input class="form-control required mobile" id="mobile2" name="mobile2" placeholder="手机" />
+                            </div>
+                            <div class="col-md-6">
+                                <input class="form-control required" id="name2" name="name2" placeholder="姓名" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input class="form-control required mobile" id="mobile3" name="mobile3" placeholder="手机" />
+                            </div>
+                            <div class="col-md-6">
+                                <input class="form-control required" id="name3" name="name3" placeholder="姓名" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                        <input type="button" name="sub3" onclick="sava1()" class="btn  btn-primary" value="确定" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

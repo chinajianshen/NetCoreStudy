@@ -1,0 +1,31 @@
+﻿
+===== 使用中间证书   https 生成本地测试证书=====
+首先自己创建根证书 root 自己做CA也就是发行者:
+openssl genrsa -des3 -out root.key
+
+然后按照提示输入密码:
+openssl req -new -key root.key -out root.csr -config openssl.cfg
+
+然后创建一个10年期根证书 root.crt:
+openssl x509 -req -days 3650 -sha1 -extensions v3_ca -signkey root.key -in root.csr -out root.crt
+
+在服务器和客户端分别安装root.crt
+
+
+创建服务器证书:
+openssl genrsa -des3 -out server.key 2048
+
+openssl req -new -key server.key -out server.csr  -config openssl.cfg
+
+openssl x509 -req -days 3650 -sha1 -extensions v3_req -CA root.crt -CAkey root.key -CAserial root.srl -CAcreateserial -in server.csr -out server.crt
+
+openssl pkcs12 -export -in server.crt -inkey server.key -out server.pfx
+
+创建客端证书：
+openssl genrsa -des3 -out client.key 2048
+
+openssl req -new -key client.key -out client.csr  -config openssl.cfg
+
+openssl x509 -req -days 3650 -sha1 -extensions v3_req -CA root.crt -CAkey root.key -CAserial root.srl -CAcreateserial -in client.csr -out client.crt
+
+openssl pkcs12 -export -in client.crt -inkey client.key -out client.pfx

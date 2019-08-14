@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Test</title>
+    <link href="/js/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-3">
+            </div>
+            <div class="col-3">
+                <h2 style="height: 80px;margin-top:20px;">用户登录</h2>
+            </div>
+            <div class="col-3">          
+            </div>
+        </div>
+        <div class="row" style="margin-top:10px;">
+            <div class="col-3">
+            </div>
+            <div class="col-6">
+                <input type="text" id="username" class="form-control" placeholder="请输入用户名" />
+                <span id="usernamespan" style="font-size:8px;color:lightgray;"></span>
+            </div>
+        </div>
+        <div class="row" style="margin-top:10px;">
+            <div class="col-3">
+            </div>
+            <div class="col-6">
+                <input type="password" id="password" class="form-control" placeholder="请输入密码" />
+                <span id="passwordspan" style="font-size:8px;color:lightgray;"></span>
+            </div>
+        </div>
+        <div class="row" style="margin-top:10px;">
+            <div class="col-3">
+            </div>
+            <div class="col-6" style="text-align:right;">
+                <input type="button" id="lgoin" name="lgoin" value="登录" class="btn btn-info" />
+            </div>
+        </div>
+    </div>
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.cookie.js"></script>
+    <script src="/js/axios/dist/axios.js"></script>
+
+    <script>
+
+      
+        $(function () {
+
+  
+            $('#lgoin').click(function () {
+                if ($("#username").val() == "") {
+                    alert(localizers.usernameempty);
+                    return;
+                }
+                if ($("#password").val() == "") {
+                    alert(localizers.passwordempty);
+                    return;
+                }
+                //#region $.post $.ajax
+                //FromForm接收
+                //$.post("/api/values", JSON.stringify( {
+                //    "UserName": $("#username").val(),
+                //    "Password": $("#password").val()
+                //}),
+                //    function (data) {
+                //        if (data.result) {
+                //            $.cookie('username', $("#username").val());
+                //            $.cookie('.AspNetCore.Culture', 'c=ja|uic=ja');
+                //            location.href = 'index.html'
+                //        } else {
+                //            alert(data.message)
+                //        }
+                //    })
+                //$.ajax({
+                //    url: "/api/values",
+                //    type: "POST",
+                //    data: JSON.stringify({
+                //        "UserName": $("#username").val(),
+                //        "Password": $("#password").val()
+                //    }),
+                //    contentType: "application/json",
+                //    success: function (data) {
+                //        if (data.result) {
+                //            $.cookie('username', $("#username").val());
+                //            $.cookie('.AspNetCore.Culture', 'c=ja|uic=ja');
+                //            location.href = 'index.html'
+                //        } else {
+                //            alert(data.message)
+                //        }
+                //    }
+                //})
+                //#endregion
+                axios.post('/api/values', {
+                    UserName: $("#username").val(),
+                    Password: $("#password").val()
+                })
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            var data = response.data;
+                            if (data.result) {
+
+                                $.cookie('username', $("#username").val());
+                                $.cookie('.AspNetCore.Culture', 'c=ja|uic=ja');
+                                location.href = 'main/body';
+                                console.log(data.message)
+                            } else {
+                                alert(data.message)
+                            }
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
+
+            });
+        });
+
+
+    </script>
+</body>
+</html>
