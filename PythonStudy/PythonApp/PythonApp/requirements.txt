@@ -3,7 +3,7 @@ chardet==3.0.4
 Django==1.11.20
 idna==2.8
 mysql-connector==2.2.9
-pip==19.1
+pip==21.1
 pytz==2019.1
 requests==2.21.0
 setuptools==41.0.1
